@@ -818,8 +818,8 @@
 
 									<div class="row">
 											<div class="col-md-4">
-												<label for="name">Full Name *</label>
-												<input id="name" required type="text" value="" class="form-control" name="contact[name][required]">
+												<label for="fullname">Full Name *</label>
+												<input id="fullname" required type="text" value="" class="form-control" name="contact[fullname][required]">
 											</div>
 											<div class="col-md-4">
 												<label for="email">E-mail Address *</label>
@@ -827,44 +827,44 @@
 											</div>
 											<div class="col-md-4">
 												<label for="phone">Phone</label>
-												<input id="phone" type="text" value="" class="form-control" name="contact[phone]">
+												<input id="phone" required type="number" value="" class="form-control" name="contact[phone][required]">
 											</div>
 									</div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="company_name">Company Name *</label>
-                                            <input id="name" required type="text" value="" class="form-control" name="contact[name][required]">
+                                            <input id="company_name" required type="text" value="" class="form-control" name="contact[company_name][required]">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="project_name">Project Name *</label>
-                                            <input id="project_name" required type="text" value="" class="form-control" name="contact[name][required]">
+                                            <input id="project_name" required type="text" value="" class="form-control" name="contact[project_name][required]">
                                         </div>
                                     </div>
 									<div class="row">
 											<div class="col-md-6">
                                                 <label for="project_description">Project Description *</label>
-												<input id="project_description" required type="text" value="" class="form-control" name="contact[subject][required]">
+												<input id="project_description" required type="text" value="" class="form-control" name="contact[project_description][required]">
 											</div>
 											<div class="col-md-6">
 												<label for="department">Department</label>
-												<select id="department" class="form-control pointer" name="contact[department]">
+												<select id="department" required class="form-control pointer" name="contact[department][required]">
 													<option value="">--- Select ---</option>
-													<option value="Marketing">Commercial</option>
-													<option value="Webdesign">Residential</option>
+													<option value="Residential">Residential</option>
+													<option value="Commercial">Commercial</option>
 												</select>
 											</div>
 									</div>
 									<div class="row">
 											<div class="col-md-12">
 												<label for="message">Message *</label>
-												<textarea id="message" required maxlength="10000" rows="8" class="form-control" name="contact[message]"></textarea>
+												<textarea id="message" required maxlength="10000" rows="8" class="form-control" name="contact[message][required]"></textarea>
 											</div>
 									</div>
 									<div class="row">
 											<div class="col-md-12">
 												<label for="attachment">File Attachment</label>
 												<!-- custom file upload -->
-												<input id="attachment" class="custom-file-upload" type="file" name="contact[attachment]"  data-btn-text="Select a File" />
+												<input id="attachment" required class="custom-file-upload" type="file" name="contact[attachment][required]"  data-btn-text="Select a File" />
 												<small class="text-muted block">
                                                     Max file size: 10Mb (zip/pdf/jpg/png)
                                                 </small>
@@ -925,28 +925,39 @@
 			<!-- MODAL -->
 			<div class="modal fade" id="success-message" role="dialog">
 				<div class="modal-dialog">				
-				<div class="modal-content">
-					<div class="modal-header" style="background-color: rgb(10, 101, 160);">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h3 class="modal-title" style="color: #fff; text-align: center;"> 		
-						<i class="et-envelope" style="color: #fff;"></i>
-						MESSAGE SENT!
-					</h3>
+					<div class="modal-content">
+						<div class="modal-header" style="background-color: rgb(10, 101, 160);">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 class="modal-title" style="color: #fff; text-align: center;"> 		
+							<i class="et-envelope" style="color: #fff;"></i>
+							MESSAGE SENT!
+						</h3>
+						</div>
+						<div class="modal-body">
+							<h4 style="text-align: center;">
+								Thank you for contacting Rocket Elevators. <br> 
+								Your inquiry is our top priority and <br> 
+								we will get back to you shortly. 
+							</h4>
+							<img class="img-fluid" width="200px" style="display: block;
+							margin-left: auto; margin-right: auto;" src="assets/images/rocketElevators/rocketLogo.png"/>
+							<h4>
+								<br>
+								Full Name: <span id="fullname_modal"></span> <br>
+								E-mail Address: <span id="email_modal"></span> <br>
+								Phone: <span id="phone_modal"></span> <br>
+								Company Name: <span id="company_name_modal"></span> <br>
+								Project Name: <span id="project_name_modal"></span> <br>
+								Project Description: <span id="project_desc_modal"></span> <br>
+								Department: <span id="department_modal"></span> <br>
+								Message: <span id="message_modal"></span> <br>
+								File Attachment: <span id="file_modal"></span>
+							</h4>
+						</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
 					</div>
-					<div class="modal-body">
-						<h4 style="text-align: center;">
-							Thank you for contacting Rocket Elevators. <br> 
-							Your inquiry is our top priority and <br> 
-							we will get back to you shortly. 
-						</h4>
-						<img class="img-fluid" width="200px" style="display: block;
-						margin-left: auto; margin-right: auto;" src="assets/images/rocketElevators/rocketLogo.png"/>
-					</div>
-					<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-				
 				</div>
 			</div>
 
@@ -1045,6 +1056,9 @@
 
 		<!-- PAGELEVEL SCRIPTS -->
 		<script src="assets/js/contact.js"></script>
+
+		<!-- SCRIPT -->
+		<script src="/src/public/contact.js"></script>
 
 		<!-- OPEN MODALS SCRIPT -->
 		<script type="text/javascript">

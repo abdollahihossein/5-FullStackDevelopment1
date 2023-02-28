@@ -1,14 +1,19 @@
 const Data = require('../../shared/resources/data');
+const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
+const validator = require('validator')
 
-const contactUs = (req,res) => {
-  const firstName = req.body.first_name;
-  const lastName = req.body.last_name;
-  const message = req.body.message;
-
-  const responseMessage = `Message received from ${firstName} ${lastName}`;
-
-  console.log(responseMessage);
-  res.send(responseMessage);
+const contactUs = async(req,res) => {
+  if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
+    try {
+      await Model.Contact.create(req.body)
+      res.send(req.body)
+    } catch (error) {
+      res.status(500).send(error.message)
+    }
+  }
+  else {
+    res.status(400).send("email and phone number not validated!")
+  }
 };
 
 const calculateResidentialQuote = (req,res) => {
