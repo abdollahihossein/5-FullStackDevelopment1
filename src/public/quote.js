@@ -115,8 +115,7 @@ function resetForm() {
 
 function displayBuildingFields(buildingType) {
     estimateNumElv_div.style.display = "block";
-    estimateNumElv_div.querySelector(".step-description").style.display =
-        "block";
+    estimateNumElv_div.querySelector(".step-description").style.display = "block";
     estimateNumElv_div.querySelector(".card-block").style.display = "block";
     estimateNumElv_div.querySelectorAll(".row").forEach((row) => {
         row.classList.remove("d-none");
@@ -129,8 +128,22 @@ function displayBuildingFields(buildingType) {
     productLineSelection_div.style.display = "block";
     finalPricingDisplay_div.style.display = "block";
 }
-
+/////////////////////////////////////////////////////
 function displayElvCalcResult(buildingType) {
+    fetch(`http://localhost:3004/calc/${buildingType}?floors=${numFloors_input.value}&apts=${numApt_input.value}&maxOccupancy=${maxOcc_input.value}&elevators=${numElevators_input.value}`)
+        .then((res) => {
+            res.json()
+            // req.params.buildingtype = buildingType
+            // req.query.apts = numApt_input.value
+            // req.query.floors = numFloors_input.value
+            // req.query.maxOccupancy = maxOcc_input.value
+            // req.query.elevators = numElevators_input.value
+        })
+        // .then((data) => {
+            
+        // });
+
+
     let calculatedElv;
     if (buildingType == "commercial") {
         calculatedElv = calcCommercialElev(
@@ -149,7 +162,7 @@ function displayElvCalcResult(buildingType) {
         displayCalcElv_input.value = calculatedElv;
     }
 }
-
+////////////////////////////////////////////////////////////
 function displayPricing(productLine, numElv) {
     let unitPrice = unitPrices[productLine];
     let installPercentFee = installPercentFees[productLine];

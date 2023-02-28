@@ -16,46 +16,93 @@ const contactUs = async(req,res) => {
   }
 };
 
-const calculateResidentialQuote = (req,res) => {
+const calculateQuote = (req,res) => {
   // define constants
-  const apts = +req.query.apts;
-  const floors = +req.query.floors;
+  console.log(req.params.buildingtype)
+  console.log(req.query.apts)
+  // console.log(req.query.tier)
+
+  const buildingType = req.params.buildingtype;
+  const apts = req.query.apts;
+  const floors = req.query.floors;
+  const maxOccupancy = req.query.maxOccupancy;
+  const elevators = req.query.elevators;
   const tier = req.query.tier.toLowerCase();
-
-  // validate request object
-  if(!Object.keys(Data.unitPrices).includes(tier)){
-    res.status(400);
-    res.send(`Error: invalid tier`);
-    return;
-  }
+  let numElevators
+  let totalCost
   
-  if(isNaN(floors) || isNaN(apts)){
-    res.status(400);
-    res.send(`Error: apts and floors must be specified as numbers`);
-    return;
-  }
+  // // validate request object
+  // if(!Object.keys(Data.unitPrices).includes(tier)){
+  //   res.status(400);
+  //   res.send(`Error: invalid tier`);
+  //   return;
+  // }
 
-  if(!Number.isInteger(floors) || !Number.isInteger(apts)){
-    res.status(400);
-    res.send(`Error: apts and floors must be integers`);
-    return;
-  }
+  // if (buildingType == "residential") {
+  //   if(isNaN(floors) || isNaN(apts)){
+  //     res.status(400);
+  //     res.send(`Error: apts and floors must be specified as numbers`);
+  //     return;
+  //   }
+  //   if(!Number.isInteger(Number(floors)) || !Number.isInteger(Number(apts))){
+  //     res.status(400);
+  //     res.send(`Error: apts and floors must be integers`);
+  //     return;
+  //   }
+  //   if(floors < 1 || apts < 1){
+  //     res.status(400);
+  //     res.send(`apts and floors must be greater than zero`);
+  //     return;
+  //   }
+  //   numElevators = calcResidentialElev(floors,apts);
+  //   totalCost = calcInstallFee(numElevators,tier) + calcElevfee(numElevators,tier);
+  // }
 
-  if(floors < 1 || apts < 1){
-    res.status(400);
-    res.send(`apts and floors must be greater than zero`);
-    return;
-  }
+  // if (buildingType == "commercial") {
+  //   if(isNaN(floors) || isNaN(maxOccupancy)){
+  //     res.status(400);
+  //     res.send(`Error: floors and maxOccupancy must be specified as numbers`);
+  //     return;
+  //   }
+  //   if(!Number.isInteger(Number(floors)) || !Number.isInteger(Number(maxOccupancy))){
+  //     res.status(400);
+  //     res.send(`Error: floors and maxOccupancy must be integers`);
+  //     return;
+  //   }
+  //   if(floors < 1 || maxOccupancy < 1){
+  //     res.status(400);
+  //     res.send(`floors and maxOccupancy must be greater than zero`);
+  //     return;
+  //   }
+  //   numElevators = calcCommercialElev(floors,maxOccupancy);
+  //   totalCost = calcInstallFee(numElevators,tier) + calcElevfee(numElevators,tier);
+  // }
 
-  // business logic
-  const numElevators = calcResidentialElev(floors,apts);
-  const totalCost = calcInstallFee(numElevators,tier);
+  // if (buildingType == "industrial") {
+  //   if(isNaN(elevators)){
+  //     res.status(400);
+  //     res.send(`Error: elevators must be specified as number`);
+  //     return;
+  //   }
+  //   if(!Number.isInteger(Number(elevators))){
+  //     res.status(400);
+  //     res.send(`Error: elevators must be integer`);
+  //     return;
+  //   }
+  //   if(elevators < 1){
+  //     res.status(400);
+  //     res.send(`elevators must be greater than zero`);
+  //     return;
+  //   }
+  //   numElevators = elevators;
+  //   totalCost = calcInstallFee(numElevators,tier) + calcElevfee(numElevators,tier);
+  // }
 
-  // format response
-  res.send({
-    elevators_required:numElevators,
-    cost: totalCost
-  });
+  // res.send({
+  //   elevators_required: numElevators,
+  //   total_cost: totalCost
+  // });
+  res.send('ok')
 };
 
 const calcResidentialElev = (numFloors, numApts) => {
@@ -72,8 +119,14 @@ const calcCommercialElev = (numFloors, maxOccupancy) => {
 const calcInstallFee = (numElvs, tier) => {
   const unitPrice = Data.unitPrices[tier];
   const installPercentFees = Data.installPercentFees[tier];
-  const total = numElvs * unitPrice * installPercentFees;
+  const total = numElvs * unitPrice * installPercentFees / 100;
   return total;
 };
 
-module.exports = {contactUs,calculateResidentialQuote};
+const calcElevfee = (numElvs, tier) => {
+  const unitPrice = Data.unitPrices[tier];
+  const total = numElvs * unitPrice;
+  return total;
+};
+
+module.exports = {contactUs,calculateQuote};

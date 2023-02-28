@@ -174,7 +174,7 @@
 								<div class="row d-none" style="margin: 20px">
 									<div id="number-of-floors" class="col-4 d-none residential commercial industrial hybrid">
 										<label><h4>Number of Floors</h4></label>
-										<input type="number" min="1" max="1000" oninput="this.value = Math.abs(this.value)" class="form-control" required>
+										<input type="number" min="1" max="1000" class="form-control" oninput="this.value = Math.abs(this.value)" required>
 									</div>
 									<div id="number-of-basements" class="col-4 d-none residential commercial industrial hybrid">
 										<label><h4>Number of Basements</h4></label>
@@ -426,7 +426,9 @@
 
 		<!-- PAGELEVEL SCRIPTS -->
 		<script src="assets/js/contact.js"></script>
-    <script src="quote.js"></script>
+
+		<!-- SCRIPT -->
+		<script src="quote.js"></script>
 
 		<!-- OPEN MODALS SCRIPT -->
 		<script type="text/javascript">
