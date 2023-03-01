@@ -58,32 +58,6 @@ const buildingTypeFields = {
         "number-of-elevators",
     ]
 };
-const unitPrices = {
-    standard: 8000,
-    premium: 12000,
-    excelium: 15000,
-};
-const installPercentFees = {
-    standard: 10,
-    premium: 15,
-    excelium: 20,
-};
-
-// CALCULATIONS
-function calcResidentialElev(numFloors, numApts) {
-    const elevatorsRequired = Math.ceil(numApts / numFloors / 6)*Math.ceil(numFloors / 20);
-    console.log(elevatorsRequired)
-    return elevatorsRequired;
-}
-function calcCommercialElev(numFloors, maxOccupancy) {
-    const elevatorsRequired = Math.ceil((maxOccupancy * numFloors) / 200)*Math.ceil(numFloors / 10);
-    const freighElevatorsRequired = Math.ceil(numFloors / 10);
-    return freighElevatorsRequired + elevatorsRequired;
-}
-
-function calcInstallFee(totalPrice, installPercentFee) {
-    return (installPercentFee / 100) * totalPrice;
-}
 
 // DISPLAY
 function resetForm() {
@@ -128,60 +102,29 @@ function displayBuildingFields(buildingType) {
     productLineSelection_div.style.display = "block";
     finalPricingDisplay_div.style.display = "block";
 }
-/////////////////////////////////////////////////////
+
 function displayElvCalcResult(buildingType) {
     fetch(`http://localhost:3004/calc/${buildingType}?floors=${numFloors_input.value}&apts=${numApt_input.value}&maxOccupancy=${maxOcc_input.value}&elevators=${numElevators_input.value}`)
-        .then((res) => {
-            res.json()
-            // req.params.buildingtype = buildingType
-            // req.query.apts = numApt_input.value
-            // req.query.floors = numFloors_input.value
-            // req.query.maxOccupancy = maxOcc_input.value
-            // req.query.elevators = numElevators_input.value
-        })
-        // .then((data) => {
-            
-        // });
-
-
-    let calculatedElv;
-    if (buildingType == "commercial") {
-        calculatedElv = calcCommercialElev(
-            parseInt(numFloors_input.value),
-            parseInt(maxOcc_input.value)
-        );
-        displayCalcElv_input.value = calculatedElv;
-    } else if (buildingType == "residential") {
-        calculatedElv = calcResidentialElev(
-            parseInt(numFloors_input.value),
-            parseInt(numApt_input.value)
-        );
-        displayCalcElv_input.value = calculatedElv;
-    } else {
-        calculatedElv = numElevators_input.value;
-        displayCalcElv_input.value = calculatedElv;
-    }
+        .then((res) => res.json())
+        .then((data) => {
+            let calculatedElv = data;
+            displayCalcElv_input.value = calculatedElv;
+        });
 }
-////////////////////////////////////////////////////////////
+
 function displayPricing(productLine, numElv) {
-    let unitPrice = unitPrices[productLine];
-    let installPercentFee = installPercentFees[productLine];
-    let subtotal = unitPrice * numElv;
-    let totalInstallFee = calcInstallFee(subtotal, installPercentFee);
-    let totalPrice = subtotal + totalInstallFee;
-    displayUnitPrice_input.setAttribute("value", formatter.format(unitPrice));
-    displayElvTotalPrice_input.setAttribute(
-        "value",
-        formatter.format(subtotal)
-    );
-    displayInstallFee_input.setAttribute(
-        "value",
-        formatter.format(totalInstallFee)
-    );
-    displayEstTotalCost_input.setAttribute(
-        "value",
-        formatter.format(totalPrice)
-    );
+    fetch(`http://localhost:3004/calc-cost?tier=${productLine}&numElevators=${numElv}`)
+        .then((res) => res.json())
+        .then((data) => {
+            let unitPrice = data.unit_price;
+            let subtotal = data.sub_total;
+            let totalInstallFee = data.install_fee;
+            let totalPrice = data.total_cost;
+            displayUnitPrice_input.setAttribute("value", formatter.format(unitPrice));
+            displayElvTotalPrice_input.setAttribute("value",formatter.format(subtotal));
+            displayInstallFee_input.setAttribute("value",formatter.format(totalInstallFee));
+            displayEstTotalCost_input.setAttribute("value",formatter.format(totalPrice));
+        });
 }
 
 function updatePricingDisplay() {
