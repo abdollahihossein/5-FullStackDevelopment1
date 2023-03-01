@@ -20,7 +20,6 @@ fetch('http://localhost:3004/agents')
             // row.insertCell(5).innerHTML = datum.region
             j++
         });
-        // myTable.rows[1].cells[3].style.color="#FF0000"
     })
 
 
