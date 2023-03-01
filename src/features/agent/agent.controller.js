@@ -6,11 +6,27 @@ const createAgent = asyncWrapper( async (req,res) => {
   res.status(201).json({ msg: 'Agent created', data: agent }); 
 });
 
-const getAllAgents = asyncWrapper( async (req,res) => {
-  const agents = await Agent.find({});
-  const agentsAlpha = agents.sort((a, b) => a.last_name.localeCompare(b.last_name));
-  res.status(200).json({ data: agentsAlpha });
-});
+// agents
+const getAllAgents = async(req, res) => {
+  const agents = await Agent.find({})
+  let count = await Agent.countDocuments({})
+  try {
+      if (count == 0) {
+          res.status(404).send('No item found!')
+      }
+      else {
+          res.send(agents)
+      }
+  } catch (error) {
+      res.status(500).send(error)
+  }
+}
+
+// const getAllAgents = asyncWrapper( async (req,res) => {
+//   const agents = await Agent.find({});
+//   const agentsAlpha = agents.sort((a, b) => a.last_name.localeCompare(b.last_name));
+//   res.status(200).json({ data: agentsAlpha });
+// });
 
 const getAgentsByRegion = asyncWrapper( async (req,res) => {
   const regionSelected = req.query.region;

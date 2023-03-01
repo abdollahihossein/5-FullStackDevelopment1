@@ -29,7 +29,15 @@
 		<link href="assets/css/color_scheme/red.css" rel="stylesheet" type="text/css" id="color_scheme" />
 
 		<link rel="stylesheet" href="./assets/css/residential.css">
-    	<script src="./assets/js/residential.js" defer></script>
+    	<!-- <script src="./assets/js/residential.js" defer></script> -->
+		<script src="./residential.js" defer></script>
+		<script src="./sorttable.js"></script>
+
+		<style>
+			table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+				content: " \25B4\25BE" 
+			}
+		</style>
 	</head>
 
 	<body class="smoothscroll enable-animation">
@@ -441,6 +449,41 @@
 				</div>
 			</section>
 			<!-- /TESTIMONIAL -->
+
+
+			<!-- TopRatedAgents -->
+			<section id="topRatedAgents">
+				<div class="container">
+					<h1 class="text-center">
+						<span style ="color:#0a65a0">T</span><span style ="color:#aa4545">o</span><span style ="color:#0a65a0">p</span>
+						<span style ="color:#aa4545">R</span><span style ="color:#0a65a0">a</span><span style ="color:#aa4545">t</span><span style ="color:#0a65a0">e</span><span style ="color:#aa4545">d</span>
+						<span style ="color:#0a65a0">A</span><span style ="color:#aa4545">g</span><span style ="color:#0a65a0">e</span><span style ="color:#aa4545">n</span><span style ="color:#0a65a0">t</span><span style ="color:#aa4545">s</span>
+					</h1>
+					<table id="myTable" class="table table-striped sortable">
+						<thead>
+							<tr>
+								<th class="sorttable_nosort">#</th>
+								<th>First Name</th>
+								<th>Last name</th>
+								<th class="sorttable_nosort">
+									Region
+									<select name="choice" id="choice">
+										<option value="all">--- All ---</option>
+										<option value="north">North</option>
+										<option value="east">East</option>
+										<option value="west">West</option>
+										<option value="south">South</option>                      
+									</select>  
+								</th>
+								<th>Rating</th>
+								<th>Fee</th>
+							</tr>
+						</thead>
+						<tbody id="tableBody"></tbody>
+					</table>
+				</div>
+			</section>
+			<!-- /TopRatedAgents -->
 
 
 			<!-- MODAL -->
