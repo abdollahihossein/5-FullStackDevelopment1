@@ -1,25 +1,15 @@
+const myTable = document.getElementById("tableBody")
+
 fetch('http://localhost:3004/agents')
     .then((res) => res.json())
     .then((data) => {
         let j = 0
-        const myTable = document.getElementById("tableBody")
         data.forEach(datum => {
-            let row = myTable.insertRow()
-            row.insertCell(0).innerHTML = j + 1
-            row.insertCell(1).innerHTML = datum.first_name
-            row.insertCell(2).innerHTML = datum.last_name
-            row.insertCell(3).innerHTML = datum.rating
-            if (datum.rating == 100) {
-                myTable.rows[j].cells[3].style.color="#299429"
-            } else if ((90 <= datum.rating) && (datum.rating < 100)) {
-                myTable.rows[j].cells[3].style.color="#207cd7"
-            } else {
-                myTable.rows[j].cells[3].style.color="#8314c7"
-            }
-            row.insertCell(4).innerHTML = `$${datum.fee}`
+            fillRow(datum, j)
+            colorRating(datum.rating, j)
             j++
         });
-        // Filtering the "Region" column:
+        // Filtering Agents by "Region":
         const filterButton = document.getElementById("choice")
         filterButton.addEventListener("change", () => {
             for (let i = 0; i < j ; i++) {
@@ -28,38 +18,16 @@ fetch('http://localhost:3004/agents')
             j = 0
             if (filterButton.options[filterButton.selectedIndex].value == "all") {
                 data.forEach(datum => {
-                    let row2 = myTable.insertRow()
-                    row2.insertCell(0).innerHTML = j + 1
-                    row2.insertCell(1).innerHTML = datum.first_name
-                    row2.insertCell(2).innerHTML = datum.last_name
-                    row2.insertCell(3).innerHTML = datum.rating
-                    if (datum.rating == 100) {
-                        myTable.rows[j].cells[3].style.color="#299429"
-                    } else if ((90 <= datum.rating) && (datum.rating < 100)) {
-                        myTable.rows[j].cells[3].style.color="#207cd7"
-                    } else {
-                        myTable.rows[j].cells[3].style.color="#8314c7"
-                    }
-                    row2.insertCell(4).innerHTML = datum.fee
+                    fillRow(datum, j)
+                    colorRating(datum.rating, j)
                     j++
                 })
             }
             else {
                 data.forEach(datum => {
                     if (datum.region == filterButton.options[filterButton.selectedIndex].value) {
-                        let row2 = myTable.insertRow()
-                        row2.insertCell(0).innerHTML = j + 1
-                        row2.insertCell(1).innerHTML = datum.first_name
-                        row2.insertCell(2).innerHTML = datum.last_name
-                        row2.insertCell(3).innerHTML = datum.rating
-                        if (datum.rating == 100) {
-                            myTable.rows[j].cells[3].style.color="#299429"
-                        } else if ((90 <= datum.rating) && (datum.rating < 100)) {
-                            myTable.rows[j].cells[3].style.color="#207cd7"
-                        } else {
-                            myTable.rows[j].cells[3].style.color="#8314c7"
-                        }
-                        row2.insertCell(4).innerHTML = datum.fee
+                        fillRow(datum, j)
+                        colorRating(datum.rating, j)
                         j++
                     }
                 })
@@ -67,6 +35,23 @@ fetch('http://localhost:3004/agents')
         })
     })
     
+const fillRow = (element, j) => {
+    let row = myTable.insertRow()
+    row.insertCell(0).innerHTML = j + 1
+    row.insertCell(1).innerHTML = element.first_name
+    row.insertCell(2).innerHTML = element.last_name
+    row.insertCell(3).innerHTML = element.rating
+    row.insertCell(4).innerHTML = `$${element.fee}`
+}
 
+const colorRating = (rating, j) => {
+    if (rating == 100) {
+        myTable.rows[j].cells[3].style.color="#299429"
+    } else if ((90 <= rating) && (rating < 100)) {
+        myTable.rows[j].cells[3].style.color="#207cd7"
+    } else {
+        myTable.rows[j].cells[3].style.color="#8314c7"
+    }
+}
 
 
