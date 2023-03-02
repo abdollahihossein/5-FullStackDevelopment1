@@ -6,6 +6,10 @@ const registerPublicRoutes = (app) => {
   app.get('/calc/:buildingtype', PublicController.calculateQuote);
 
   app.get('/calc-cost', PublicController.calcCost);
+
+  app.get('/agents', PublicController.getAllAgentsResidential);
+
+  app.post('/sort-region', PublicController.sortRegion)
 }
 
 module.exports = {registerPublicRoutes};

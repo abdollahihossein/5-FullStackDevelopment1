@@ -1,4 +1,5 @@
 const myTable = document.getElementById("tableBody")
+const filterButton = document.getElementById("choice")
 
 fetch('http://localhost:3004/agents')
     .then((res) => res.json())
@@ -10,13 +11,13 @@ fetch('http://localhost:3004/agents')
             j++
         });
         // Filtering Agents by "Region":
-        const filterButton = document.getElementById("choice")
         filterButton.addEventListener("change", () => {
             for (let i = 0; i < j ; i++) {
                 document.getElementById("tableBody").deleteRow(0)
             }
             j = 0
-            if (filterButton.options[filterButton.selectedIndex].value == "all") {
+            let selectedRegion = filterButton.options[filterButton.selectedIndex].value
+            if (selectedRegion == "all") {
                 data.forEach(datum => {
                     fillRow(datum, j)
                     colorRating(datum.rating, j)
@@ -24,13 +25,24 @@ fetch('http://localhost:3004/agents')
                 })
             }
             else {
-                data.forEach(datum => {
-                    if (datum.region == filterButton.options[filterButton.selectedIndex].value) {
-                        fillRow(datum, j)
-                        colorRating(datum.rating, j)
-                        j++
-                    }
+                fetch('http://localhost:3004/sort-region', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "region": selectedRegion,
+                        data
+                    })
                 })
+                    .then((res) => res.json())
+                    .then((filtereddata) => {
+                        filtereddata.forEach(datum => {
+                            fillRow(datum, j)
+                            colorRating(datum.rating, j)
+                            j++
+                        })
+                    })
             }
         })
     })
