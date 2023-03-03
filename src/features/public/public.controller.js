@@ -1,6 +1,5 @@
 const Data = require('../../shared/resources/data');
 const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
-const validator = require('validator')
 
 const contactUs = async(req,res) => {
   try {

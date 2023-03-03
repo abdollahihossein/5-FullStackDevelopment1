@@ -16,19 +16,6 @@ const registerBaseMiddleWare = (app) => {
   app.use(validateContact);
 };
 
-const validateContact = (req, res, next) => {
-  if (req.url !== '/contact') {
-    next();
-    return;
-  }
-  if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
-    next();
-    return;
-  }
-  res.status(400)
-  res.send({message: "email and phone number not validated!",});
-}
-
 const logger = (req, res, next) => {
   const message = `API call: ${req.method} on ${req.originalUrl} at ${new Date()}`
   console.log(message);
@@ -57,6 +44,19 @@ const checkAuthToken = (req, res, next) => {
     return;
   }
   next();
+};
+
+const validateContact = (req, res, next) => {
+  if (req.url !== '/contact') {
+    next();
+    return;
+  }
+  if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
+    next();
+    return;
+  }
+  res.status(400)
+  res.send({message: "email and phone number not validated!",});
 };
 
 module.exports = {registerBaseMiddleWare};
