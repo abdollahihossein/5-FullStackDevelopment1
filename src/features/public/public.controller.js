@@ -25,7 +25,10 @@ const calculateQuote = (req,res) => {
   const maxOccupancy = req.query.maxOccupancy;
   const elevators = req.query.elevators;
   let numElevators
-
+  
+  console.log(req.query.floors)
+  console.log(req.params.buildingtype)
+  
   if (buildingType == "residential") {
     if(isNaN(floors) || isNaN(apts)){
       res.status(400);
