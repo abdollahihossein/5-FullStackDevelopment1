@@ -3,16 +3,12 @@ const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
 const validator = require('validator')
 
 const contactUs = async(req,res) => {
-  if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
-    try {
-      await Model.Contact.create(req.body)
-      res.send(req.body)
-    } catch (error) {
-      res.status(500).send(error.message)
-    }
-  }
-  else {
-    res.status(400).send("email and phone number not validated!")
+  try {
+    await Model.Contact.create(req.body)
+    res.send(req.body)
+  } catch (error) {
+    res.status(500)
+    res.send(error.message)
   }
 };
 
@@ -53,7 +49,7 @@ const calculateResidentialQuote = (req,res) => {
 
   // format response
   res.send({
-    elevators_required:numElevators,
+    elevators_required: numElevators,
     cost: totalCost
   });
 };
