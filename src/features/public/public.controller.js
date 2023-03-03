@@ -2,6 +2,7 @@ const Data = require('../../shared/resources/data');
 const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
 const validator = require('validator')
 
+// /contact
 const contactUs = async(req,res) => {
   if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
     try {
@@ -16,6 +17,7 @@ const contactUs = async(req,res) => {
   }
 };
 
+// '/calc/:buildingtype'
 const calculateQuote = (req,res) => {
   const buildingType = req.params.buildingtype;
   const apts = req.query.apts;
@@ -83,6 +85,7 @@ const calculateQuote = (req,res) => {
   res.json(numElevators)
 };
 
+// '/calc-cost'
 const calcCost = (req, res) => {
   const numberOfElevators = req.query.numElevators;
   const tier = req.query.tier;
