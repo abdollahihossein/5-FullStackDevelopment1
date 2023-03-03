@@ -15,8 +15,9 @@ const status = async(req, res) => {
 };
 
 const error = async(req, res) => {
-  res.status(400);
-  res.send('error');
+  ResponseUtil.respondOk(res, null, 'error')
+  // res.status(400);
+  // res.send('error');
 };
 
 module.exports = {helloWorld, status, error};

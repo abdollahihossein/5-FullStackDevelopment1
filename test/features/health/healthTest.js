@@ -11,7 +11,7 @@ describe('HealthController', () => {
   describe('#helloWorld()', () => {
     it('respond with Hello World!!', (done) => {
       sinon.stub(ResponseUtil,'respondOk').callsFake((res, data ,message) => {
-        chai.assert.equal(message,'Hello World!!');
+        chai.assert.equal(message, 'Hello World!!');
         done();
       });
       
@@ -21,7 +21,7 @@ describe('HealthController', () => {
 
   describe('#status()', () => {
     it('respond with Environment name and running port', (done) => {
-      sinon.stub(ResponseUtil, "respondOk").callsFake((res, data, message) => {
+      sinon.stub(ResponseUtil, 'respondOk').callsFake((res, data, message) => {
         const port = process.env.PORT || 3004;
         const envName = process.env.ENV_NAME;
         chai.assert.equal(message, `Environment '${envName}' running on port: ${port}`);
@@ -29,6 +29,17 @@ describe('HealthController', () => {
       });
 
       void HealthController.status();
+    });
+  });
+
+  describe('#error()', () => {
+    it('respond with error', (done) => {
+      sinon.stub(ResponseUtil, 'respondOk').callsFake((res, data, message) => {
+        chai.assert.equal(message, 'error');
+        done();
+      });
+
+      void HealthController.error();
     });
   });
 

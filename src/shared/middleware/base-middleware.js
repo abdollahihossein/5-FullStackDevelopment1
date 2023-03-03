@@ -9,7 +9,7 @@ const adminRoutes = [
 ];
 
 const registerBaseMiddleWare = (app) => {
-  app.use(Express.json());
+  // app.use(Express.json());
   app.use(logger);
   app.use(checkAuthToken);
 };
@@ -21,7 +21,12 @@ const logger = (req,res,next) => {
 };
 
 const checkAuthToken = (req,res,next) => {
-  const url = req.url.slice(0,req.url.indexOf('?'));
+  let url
+  if (req.url.indexOf('?') == -1) {
+    url = req.url;
+  } else {
+    url = req.url.slice(0,req.url.indexOf('?'));
+  }
 
   if(!adminRoutes.includes(url)){
     next();

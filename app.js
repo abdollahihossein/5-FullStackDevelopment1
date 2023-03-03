@@ -2,6 +2,7 @@ require('dotenv').config();
 const Express = require('express');
 const cors = require('cors');
 const app = Express();
+// const bodyParser = require('body-parser');
 const port = process.env.PORT || 3004;
 
 const MongoManager = require('./src/shared/db/mongodb/mongo-manager');
@@ -16,6 +17,8 @@ const regionRouter = require('./src/routes/region.routes');
 app.use(cors())
 app.use(Express.static('./src/public')) //serves our static genesis project
 app.use(Express.json())
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({extended: true}))
 
 
 MiddleWare.registerBaseMiddleWare(app);
