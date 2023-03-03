@@ -48,12 +48,12 @@ const sortRegion = async(req, res) => {
 }
 
 // Calculation Number of Elevators
-const calculateQuote = (req, res) => {
-  const buildingType = req.params.buildingtype;
-  const apts = req.query.apts;
-  const floors = req.query.floors;
-  const maxOccupancy = req.query.maxOccupancy;
-  const elevators = req.query.elevators;
+const calculateQuote = async(req, res) => {
+  let buildingType = req.params.buildingtype;
+  let floors = req.query.floors;
+  let apts = req.query.apts;
+  let maxOccupancy = req.query.maxOccupancy;
+  let elevators = req.query.elevators;
   let numElevators
 
   if (buildingType == "residential") {
@@ -116,9 +116,9 @@ const calculateQuote = (req, res) => {
 };
 
 // Calculation Cost
-const calcCost = (req, res) => {
-  const numberOfElevators = req.query.numElevators;
-  const tier = req.query.tier;
+const calcCost = async(req, res) => {
+  let numberOfElevators = req.query.numElevators;
+  let tier = req.query.tier;
   let unitPrice = Data.unitPrices[tier];
   let subTotal = calcElevfee(numberOfElevators,tier);
   let installFee = calcInstallFee(numberOfElevators,tier);
