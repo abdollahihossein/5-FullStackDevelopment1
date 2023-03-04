@@ -38,13 +38,17 @@ const getAllAgentsResidential = async(req, res) => {
 const sortRegion = async(req, res) => {
   let j = 0
   let filteredData = []
-  req.body.data.forEach(element => {
-    if (element.region == req.body.region) {
-      filteredData[j] = element
-      j++
-    }
-  });
-  res.send(filteredData)
+  try {
+    req.body.data.forEach(element => {
+      if (element.region == req.body.region) {
+        filteredData[j] = element
+        j++
+      }
+    });
+    res.send(filteredData)
+  } catch (error) {
+    res.status(500).send(error)
+  }
 }
 
 // Calculation Number of Elevators

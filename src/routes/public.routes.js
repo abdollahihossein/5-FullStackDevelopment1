@@ -9,7 +9,7 @@ const registerPublicRoutes = (app) => {
 
   app.get('/agents', PublicController.getAllAgentsResidential);
 
-  app.post('/sort-region', PublicController.sortRegion)
+  app.post('/sort-region', PublicController.sortRegion);
 }
 
 module.exports = {registerPublicRoutes};
