@@ -1,24 +1,22 @@
 # Full-Stack-Development-1
-Week 6 - Full Stack Development
+This is the project for 6th week in CodeBoxx.
+-----------------------------------------------------------------------------------
+Unit Testing:
+
+Unit testing focuses on testing individual parts/units of a software application early in the SDLC(Software Development Life Cycle). Any function, procedure, method, or module can be a unit to undergo unit testing for determining its correctness and expected behavior. Unit testing is the first testing that developers perform during the development phase.
 
 
-////////////////////////////////////////////////
-Delete section after completed
+Functional Testing:
 
-Install all your packages:
+Functional testing ensures that software features and functionalities are behaving as expected without any glitch. It mainly validates the entire application against specifications mentioned in the Software Requirement Specification (SRS) document.
 
-```
-npm install
 
-```
+Integration Testing:
 
-Make sure to create a .env file.  You'll need to setup your credentials:
+Integration testing involves testing different modules of a software application as a group. A software application is made up of different submodules that work together for different functionalities. The purpose of integration testing is to validate the integration of different modules together and identify the bugs and issues related to them.
 
-<ul>
-    <li>PORT</li>
-    <li>ENV_NAME</li>
-    <li>TOKEN</li>
-    <li>MONGO_URI</li>
-</ul>
+-----------------------------------------------------------------------------------
 
-////////////////////////////////////////////////
+why the senior devs choose to include unit testing over other forms of testing?
+
+With a proper unit testing practice in place, the developers can help to save time as bugs can be identified early in the process as it is the initial phase of testing.
