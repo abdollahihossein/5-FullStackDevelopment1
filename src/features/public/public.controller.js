@@ -1,24 +1,20 @@
 const Data = require('../../shared/resources/data');
-const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
-const Agent = require('../../shared/db/mongodb/schemas/agent.Schema')
-const validator = require('validator')
+const Model = require('../../shared/db/mongodb/schemas/contact.Schema');
+const Agent = require('../../shared/db/mongodb/schemas/agent.Schema');
+const validator = require('validator');
 
-// Contact Us
+// '/contact'
 const contactUs = async(req, res) => {
-  if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
-    try {
-      await Model.Contact.create(req.body)
-      res.send(req.body)
-    } catch (error) {
-      res.status(500).send(error.message)
-    }
-  }
-  else {
-    res.status(400).send("email and phone number not validated!")
+  try {
+    await Model.Contact.create(req.body)
+    res.send(req.body)
+  } catch (error) {
+    res.status(500)
+    res.send(error.message)
   }
 };
 
-// Agents
+// '/agents'
 const getAllAgentsResidential = async(req, res) => {
   const agents = await Agent.find({})
   let count = await Agent.countDocuments({})
@@ -32,30 +28,34 @@ const getAllAgentsResidential = async(req, res) => {
   } catch (error) {
       res.status(500).send(error)
   }
-}
+};
 
-// Sort Region
+// '/sort-region'
 const sortRegion = async(req, res) => {
   let j = 0
   let filteredData = []
-  req.body.data.forEach(element => {
-    if (element.region == req.body.region) {
-      filteredData[j] = element
-      j++
-    }
-  });
-  res.send(filteredData)
-}
+  try {
+    req.body.data.forEach(element => {
+      if (element.region == req.body.region) {
+        filteredData[j] = element
+        j++
+      }
+    });
+    res.send(filteredData)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+};
 
-// Calculation Number of Elevators
+// '/calc/:buildingtype'
 const calculateQuote = async(req, res) => {
-  let buildingType = req.params.buildingtype;
-  let floors = req.query.floors;
-  let apts = req.query.apts;
-  let maxOccupancy = req.query.maxOccupancy;
-  let elevators = req.query.elevators;
+  const buildingType = req.params.buildingtype;
+  const apts = req.query.apts;
+  const floors = req.query.floors;
+  const maxOccupancy = req.query.maxOccupancy;
+  const elevators = req.query.elevators;
   let numElevators
-
+  
   if (buildingType == "residential") {
     if(isNaN(floors) || isNaN(apts)){
       res.status(400);
@@ -115,10 +115,10 @@ const calculateQuote = async(req, res) => {
   res.json(numElevators)
 };
 
-// Calculation Cost
+// '/calc-cost'
 const calcCost = async(req, res) => {
-  let numberOfElevators = req.query.numElevators;
-  let tier = req.query.tier;
+  const numberOfElevators = req.query.numElevators;
+  const tier = req.query.tier;
   let unitPrice = Data.unitPrices[tier];
   let subTotal = calcElevfee(numberOfElevators,tier);
   let installFee = calcInstallFee(numberOfElevators,tier);

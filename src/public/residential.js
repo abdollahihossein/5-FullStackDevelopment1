@@ -65,5 +65,3 @@ const colorRating = (rating, j) => {
         myTable.rows[j].cells[3].style.color="#8314c7"
     }
 }
-
-
