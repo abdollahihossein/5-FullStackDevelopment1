@@ -1,7 +1,9 @@
 const Data = require('../../shared/resources/data');
-const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
+const Model = require('../../shared/db/mongodb/schemas/contact.Schema');
+const Agent = require('../../shared/db/mongodb/schemas/agent.Schema');
+const validator = require('validator');
 
-// /contact
+// '/contact'
 const contactUs = async(req,res) => {
   try {
     await Model.Contact.create(req.body)
@@ -12,8 +14,42 @@ const contactUs = async(req,res) => {
   }
 };
 
+// '/agents'
+const getAllAgentsResidential = async(req, res) => {
+  const agents = await Agent.find({})
+  let count = await Agent.countDocuments({})
+  try {
+      if (count == 0) {
+          res.status(404).send('No item found!')
+      }
+      else {
+          res.send(agents)
+      }
+  } catch (error) {
+      res.status(500).send(error)
+  }
+};
+
+// '/sort-region'
+const sortRegion = async(req, res) => {
+  let j = 0
+  let filteredData = []
+  try {
+    req.body.data.forEach(element => {
+      if (element.region == req.body.region) {
+        filteredData[j] = element
+        j++
+      }
+    });
+    res.send(filteredData)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+};
+
 // '/calc/:buildingtype'
 const calculateQuote = (req,res) => {
+
   const buildingType = req.params.buildingtype;
   const apts = req.query.apts;
   const floors = req.query.floors;
@@ -120,4 +156,4 @@ const calcInstallFee = (numElvs, tier) => {
   return total;
 };
 
-module.exports = {contactUs,calculateQuote, calcCost};
+module.exports = {contactUs, calculateQuote, calcCost, getAllAgentsResidential, sortRegion};

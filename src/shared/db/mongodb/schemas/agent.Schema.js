@@ -42,4 +42,8 @@ const AgentSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+
+// const Agents = mongoose.model('Agents', AgentSchema)
+// module.exports = {Agents}
+
 module.exports = mongoose.model('Agent', AgentSchema)
