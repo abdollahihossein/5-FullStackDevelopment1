@@ -1,14 +1,14 @@
 const Data = require('../../shared/resources/data');
+const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
 
-const contactUs = (req,res) => {
-  const firstName = req.body.first_name;
-  const lastName = req.body.last_name;
-  const message = req.body.message;
-
-  const responseMessage = `Message received from ${firstName} ${lastName}`;
-
-  console.log(responseMessage);
-  res.send(responseMessage);
+const contactUs = async(req,res) => {
+  try {
+    await Model.Contact.create(req.body)
+    res.send(req.body)
+  } catch (error) {
+    res.status(500)
+    res.send(error.message)
+  }
 };
 
 const calculateResidentialQuote = (req,res) => {
@@ -48,7 +48,7 @@ const calculateResidentialQuote = (req,res) => {
 
   // format response
   res.send({
-    elevators_required:numElevators,
+    elevators_required: numElevators,
     cost: totalCost
   });
 };
