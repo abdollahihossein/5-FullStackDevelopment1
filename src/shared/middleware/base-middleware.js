@@ -22,33 +22,6 @@ const registerBaseMiddleWare = (app) => {
   app.use(validateBuildingType);
 };
 
-const validateBuildingType = (req, res, next) => {
-  let url
-  const index = req.url.indexOf('/', 2)
-  if (index == -1) {
-    url = req.url;
-  } else {
-    url = req.url.slice(0, index);
-  }
-
-  console.log(url)
-  console.log(req.query.floors)
-  console.log(req.params.buildingtype)
-  
-  if (url !== '/calc') {
-    next();
-    return;
-  }
-  
-  // if (validator.equals(req.params.buildingtype, 'residential')) {
-  //   next();
-  //   return;
-  // }
-  res.status(400)
-  res.send('building type must be residential or commercial or industrial');
-  // next();
-}
-
 const logger = (req,res,next) => {
   const message = `API call: ${req.method} on ${req.originalUrl} at ${new Date()}`
   console.log(message);
@@ -72,6 +45,40 @@ const checkAuthToken = (req,res,next) => {
     return;
   }
   next();
+};
+
+const validateBuildingType = (req, res, next) => {
+  let url
+  const index = req.url.indexOf('/', 2)
+  
+  if (index == -1) {
+    url = req.url;
+  } else {
+    url = req.url.slice(0, index);
+  }
+  
+  if (url !== '/calc') {
+    next();
+    return;
+  }
+
+  const index2 = req.url.indexOf('?')
+  let buildingType = req.originalUrl.slice(index + 1, index2)
+
+  let flag = 0;
+  building_type.forEach(element => {
+    if (validator.equals(buildingType, element)) {
+      flag = 1;
+    }
+  });
+  
+  if (flag == 1) {
+    next();
+    return;
+  }
+
+  res.status(400)
+  res.send('Building type must be either residential or commercial or industrial');
 };
 
 module.exports = {registerBaseMiddleWare};

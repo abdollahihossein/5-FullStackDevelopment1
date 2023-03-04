@@ -1,6 +1,5 @@
 const Data = require('../../shared/resources/data');
 const Model = require('../../shared/db/mongodb/schemas/contact.Schema')
-const validator = require('validator')
 
 // /contact
 const contactUs = async(req,res) => {
@@ -25,9 +24,6 @@ const calculateQuote = (req,res) => {
   const maxOccupancy = req.query.maxOccupancy;
   const elevators = req.query.elevators;
   let numElevators
-  
-  console.log(req.query.floors)
-  console.log(req.params.buildingtype)
   
   if (buildingType == "residential") {
     if(isNaN(floors) || isNaN(apts)){
