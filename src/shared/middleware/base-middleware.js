@@ -19,17 +19,23 @@ const registerBaseMiddleWare = (app) => {
   app.use(Express.json());
   app.use(logger);
   app.use(checkAuthToken);
+  app.use(validateContact);
   app.use(validateBuildingType);
 };
 
-const logger = (req,res,next) => {
+const logger = (req, res, next) => {
   const message = `API call: ${req.method} on ${req.originalUrl} at ${new Date()}`
   console.log(message);
   next();
 };
 
-const checkAuthToken = (req,res,next) => {
-  const url = req.url.slice(0,req.url.indexOf('?'));
+const checkAuthToken = (req, res, next) => {
+  let url
+  if (req.url.indexOf('?') == -1) {
+    url = req.url;
+  } else {
+    url = req.url.slice(0,req.url.indexOf('?'));
+  }
 
   if(!adminRoutes.includes(url)){
     next();
@@ -45,6 +51,21 @@ const checkAuthToken = (req,res,next) => {
     return;
   }
   next();
+};
+
+const validateContact = (req, res, next) => {
+  if (req.url !== '/contact') {
+    next();
+    return;
+  }
+  
+  if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
+    next();
+    return;
+  }
+  
+  res.status(400)
+  res.send({message: "email and phone number not validated!",});
 };
 
 const validateBuildingType = (req, res, next) => {
