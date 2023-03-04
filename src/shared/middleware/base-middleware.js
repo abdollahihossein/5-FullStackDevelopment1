@@ -9,11 +9,18 @@ const adminRoutes = [
   '/calc-residential'
 ];
 
+const building_type = [
+  'residential',
+  'commercial',
+  'industrial'
+];
+
 const registerBaseMiddleWare = (app) => {
   app.use(Express.json());
   app.use(logger);
   app.use(checkAuthToken);
   app.use(validateContact);
+  app.use(validateBuildingType);
 };
 
 const logger = (req, res, next) => {
@@ -51,12 +58,48 @@ const validateContact = (req, res, next) => {
     next();
     return;
   }
+  
   if ((validator.isEmail(req.body.email)) && (validator.isMobilePhone(req.body.phone))) {
     next();
     return;
   }
+  
   res.status(400)
   res.send({message: "email and phone number not validated!",});
+};
+
+const validateBuildingType = (req, res, next) => {
+  let url
+  const index = req.url.indexOf('/', 2)
+  
+  if (index == -1) {
+    url = req.url;
+  } else {
+    url = req.url.slice(0, index);
+  }
+  
+  if (url !== '/calc') {
+    next();
+    return;
+  }
+
+  const index2 = req.url.indexOf('?')
+  let buildingType = req.originalUrl.slice(index + 1, index2)
+
+  let flag = 0;
+  building_type.forEach(element => {
+    if (validator.equals(buildingType, element)) {
+      flag = 1;
+    }
+  });
+  
+  if (flag == 1) {
+    next();
+    return;
+  }
+
+  res.status(400)
+  res.send('Building type must be either residential or commercial or industrial');
 };
 
 module.exports = {registerBaseMiddleWare};
