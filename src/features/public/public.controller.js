@@ -4,7 +4,7 @@ const Agent = require('../../shared/db/mongodb/schemas/agent.Schema');
 const validator = require('validator');
 
 // '/contact'
-const contactUs = async(req,res) => {
+const contactUs = async(req, res) => {
   try {
     await Model.Contact.create(req.body)
     res.send(req.body)
@@ -48,8 +48,7 @@ const sortRegion = async(req, res) => {
 };
 
 // '/calc/:buildingtype'
-const calculateQuote = (req,res) => {
-
+const calculateQuote = async(req, res) => {
   const buildingType = req.params.buildingtype;
   const apts = req.query.apts;
   const floors = req.query.floors;
@@ -117,7 +116,7 @@ const calculateQuote = (req,res) => {
 };
 
 // '/calc-cost'
-const calcCost = (req, res) => {
+const calcCost = async(req, res) => {
   const numberOfElevators = req.query.numElevators;
   const tier = req.query.tier;
   let unitPrice = Data.unitPrices[tier];

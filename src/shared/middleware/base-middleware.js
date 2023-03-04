@@ -23,7 +23,7 @@ const region = [
 ];
 
 const registerBaseMiddleWare = (app) => {
-  app.use(Express.json());
+  // app.use(Express.json());
   app.use(logger);
   app.use(checkAuthToken);
   app.use(validateContact);

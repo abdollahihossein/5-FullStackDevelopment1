@@ -103,28 +103,33 @@ function displayBuildingFields(buildingType) {
     finalPricingDisplay_div.style.display = "block";
 }
 
-function displayElvCalcResult(buildingType) {
-    fetch(`http://localhost:3004/calc/${buildingType}?floors=${numFloors_input.value}&apts=${numApt_input.value}&maxOccupancy=${maxOcc_input.value}&elevators=${numElevators_input.value}`)
-        .then((res) => res.json())
-        .then((data) => {
-            let calculatedElv = data;
-            displayCalcElv_input.value = calculatedElv;
-        });
+const displayElvCalcResult = async (buildingType) => {
+    let calculatedElv;
+    await fetch(`http://localhost:3004/calc/${buildingType}?floors=${numFloors_input.value}&apts=${numApt_input.value}&maxOccupancy=${maxOcc_input.value}&elevators=${numElevators_input.value}`)
+            .then((res) => res.json())
+            .then((data) => {
+                calculatedElv = data;
+            });
+    displayCalcElv_input.value = calculatedElv;
 }
 
-function displayPricing(productLine, numElv) {
-    fetch(`http://localhost:3004/calc-cost?tier=${productLine}&numElevators=${numElv}`)
-        .then((res) => res.json())
-        .then((data) => {
-            let unitPrice = data.unit_price;
-            let subtotal = data.sub_total;
-            let totalInstallFee = data.install_fee;
-            let totalPrice = data.total_cost;
-            displayUnitPrice_input.setAttribute("value", formatter.format(unitPrice));
-            displayElvTotalPrice_input.setAttribute("value",formatter.format(subtotal));
-            displayInstallFee_input.setAttribute("value",formatter.format(totalInstallFee));
-            displayEstTotalCost_input.setAttribute("value",formatter.format(totalPrice));
-        });
+const displayPricing = async (productLine, numElv) => {
+    let unitPrice
+    let subtotal
+    let totalInstallFee
+    let totalPrice
+    await fetch(`http://localhost:3004/calc-cost?tier=${productLine}&numElevators=${numElv}`)
+            .then((res) => res.json())
+            .then((data) => {
+                unitPrice = data.unit_price;
+                subtotal = data.sub_total;
+                totalInstallFee = data.install_fee;
+                totalPrice = data.total_cost;
+            });
+    displayUnitPrice_input.setAttribute("value", formatter.format(unitPrice));
+    displayElvTotalPrice_input.setAttribute("value",formatter.format(subtotal));
+    displayInstallFee_input.setAttribute("value",formatter.format(totalInstallFee));
+    displayEstTotalCost_input.setAttribute("value",formatter.format(totalPrice));
 }
 
 function updatePricingDisplay() {
